@@ -1,0 +1,40 @@
+.cardContainer {
+  border-radius: 12px;
+  height: 180px;
+  width: auto;
+  background-color: #ffc86d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+}
+
+.bg2 {
+  background-color: #ffe37d;
+}
+
+.d-flx {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    padding: 16px;
+    background: white;
+    border-radius: 50%;
+    margin-top: 10px;
+
+  }
+
+  ion-card-subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    padding-top: 10px;
+    color: #455A64;
+  }
+
+
+}

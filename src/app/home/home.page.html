@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      DocScanner Ionic Cordova App
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Card design section start  -->
+  <ion-row class="ion-padding">
+    <ion-col size="6">
+      <ion-card class="cardContainer ion-no-margin" (click)="scanDocument()">
+        <div class="d-flx">
+
+          <ion-icon class="ion-padding" name="scan-outline" size="large" />
+          <ion-card-subtitle>Scan</ion-card-subtitle>
+          <p>Document, ID card </p>
+
+        </div>
+      </ion-card>
+    </ion-col>
+    <ion-col size="6">
+      <ion-card class="cardContainer ion-no-margin bg2">
+        <div class="d-flx">
+
+          <ion-icon class="ion-padding" name="text-outline" size="large" />
+          <ion-card-subtitle>Extract Text</ion-card-subtitle>
+          <p>Pdf, jpg, txt</p>
+
+        </div>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+
+</ion-content>
