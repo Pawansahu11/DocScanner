@@ -16,7 +16,6 @@
           <ion-icon class="ion-padding" name="scan-outline" size="large" />
           <ion-card-subtitle>Scan</ion-card-subtitle>
           <p>Document, ID card </p>
-
         </div>
       </ion-card>
     </ion-col>
@@ -29,6 +28,20 @@
           <p>Pdf, jpg, txt</p>
 
         </div>
+      </ion-card>
+    </ion-col>
+    <ion-col size="12" *ngIf="ScanDoc">
+      <ion-img src={{ScanDoc}} class="imagContainer" />
+      <ion-card>
+        
+
+        <!-- <ion-img
+          src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png'
+          class="imagContainer" /> -->
+        <div class="OcrIcon" (click)="recognizeText('')">
+          <ion-icon name="text-outline" ></ion-icon>
+        </div>
+        <div></div>
       </ion-card>
     </ion-col>
   </ion-row>

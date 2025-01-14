@@ -10,15 +10,27 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-        "ionic-cordova-build": {
-          "builder": "@ionic/angular-toolkit:cordova-build",
+        "ionic-cordova-serve": {
+          "builder": "@ionic/cordova-builders:cordova-serve",
           "options": {
-            "cordovaBuildTarget": "app:build",
+            "cordovaBuildTarget": "app:ionic-cordova-build",
             "devServerTarget": "app:serve"
           },
           "configurations": {
             "production": {
-              "cordovaBuildTarget": "app:build:production"
+              "cordovaBuildTarget": "app:ionic-cordova-build:production",
+              "devServerTarget": "app:serve:production"
+            }
+          }
+        },
+        "ionic-cordova-build": {
+          "builder": "@ionic/cordova-builders:cordova-build",
+          "options": {
+            "browserTarget": "app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "app:build:production"
             }
           }
         },
@@ -76,7 +88,9 @@
               "sourceMap": true,
               "namedChunks": true
             },
-            "ci": {}
+            "ci": {
+              "progress": false
+            }
           },
           "defaultConfiguration": "production"
         },
@@ -144,7 +158,10 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ],
+    "analytics": "9edf6e89-cb01-412f-b58e-2defbd5b9568"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
