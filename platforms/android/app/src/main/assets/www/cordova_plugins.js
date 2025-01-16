@@ -1,6 +1,14 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
   module.exports = [
     {
+      "id": "cordova-plugin-android-permissions.Permissions",
+      "file": "plugins/cordova-plugin-android-permissions/www/permissions.js",
+      "pluginId": "cordova-plugin-android-permissions",
+      "clobbers": [
+        "cordova.plugins.permissions"
+      ]
+    },
+    {
       "id": "cordova-plugin-statusbar.statusbar",
       "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
       "pluginId": "cordova-plugin-statusbar",
@@ -286,9 +294,18 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
         "cordova"
       ],
       "runs": true
+    },
+    {
+      "id": "cordova-plugin-file-opener2.FileOpener2",
+      "file": "plugins/cordova-plugin-file-opener2/www/plugins.FileOpener2.js",
+      "pluginId": "cordova-plugin-file-opener2",
+      "clobbers": [
+        "cordova.plugins.fileOpener2"
+      ]
     }
   ];
   module.exports.metadata = {
+    "cordova-plugin-android-permissions": "1.1.5",
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-splashscreen": "5.0.2",
@@ -299,6 +316,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-pdf-generator": "2.1.1",
     "cordova-plugin-mobile-ocr": "3.1.3",
     "cordova-sqlite-storage": "6.1.0",
-    "cordova-plugin-file": "8.1.3"
+    "cordova-plugin-file": "8.1.3",
+    "cordova-plugin-file-opener2": "4.0.0"
   };
 });
