@@ -47,6 +47,9 @@
     },
     "cordova-plugin-file-opener2": {
       "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-clipboard": {
+      "PACKAGE_NAME": "io.ionic.starter"
     }
   },
   "dependent_plugins": {}

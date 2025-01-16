@@ -10,7 +10,7 @@
   <!-- Card design section start  -->
   <ion-row class="ion-padding">
     <ion-col size="6">
-      <ion-card class="cardContainer ion-no-margin" (click)="scanDocument(1)">
+      <ion-card class="cardContainer ion-no-margin" (click)="scanDocument(0)">
         <div class="d-flx">
 
           <ion-icon class="ion-padding" name="scan-outline" size="large" />
@@ -24,7 +24,6 @@
     <ion-col size="6">
       <ion-card class="cardContainer ion-no-margin bg2" (click)="captureImage()">
         <div class="d-flx">
-
           <ion-icon class="ion-padding" name="text-outline" size="large" />
           <ion-card-subtitle>Extract Text</ion-card-subtitle>
           <p>Pdf, jpg, txt</p>
@@ -32,27 +31,25 @@
         </div>
       </ion-card>
     </ion-col>
-    <ion-col size="12">
-      <!-- <ion-button (click)="createDirectory()">Create Directory</ion-button>
-      <ion-button (click)="saveFile()">Save File</ion-button>
-      <ion-button (click)="checkDirectory()">Check Directory</ion-button>
-      <ion-button (click)="checkFile()">Check File</ion-button> -->
+    <ion-col size="12" *ngIf="recognizedText">
       <ion-card style="width: 100%;">
-        <img src={{extractScanImage}} />
-
-        <ion-card-content >
-          <ion-label>
-            <span *ngFor="let text of recognizedText ">{{text}}</span>
+        <ion-card-title>Extracted Text</ion-card-title>
+        <div class="copyIcon" (click)="copyText()"><ion-icon name="copy-outline"></ion-icon></div>
+        <ion-card-content>
+          <ion-label class="ion-padding ion-margin-top">
+            {{recognizedText}}
+            <!-- <span *ngFor="let text of recognizedText ">{{recognizedText}}</span> -->
           </ion-label>
 
         </ion-card-content>
       </ion-card>
     </ion-col>
     <ion-col size="12" *ngIf="pdfPreview">
-
       <div [innerHTML]="pdfPreview"></div>
 
     </ion-col>
+    <div *ngIf="scanimg && scanimg.length > 0" class="ion-padding">
+      
     <ion-col size="6" class="ion-text-right">
       <ion-button class="ion-text-capitalize" fill="clear" (click)="scanDocument(0)">
         Keep Scanning
@@ -63,6 +60,7 @@
         Save PDF
       </ion-button>
     </ion-col>
+    </div>
 
   </ion-row>
 

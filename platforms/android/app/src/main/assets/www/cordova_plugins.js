@@ -302,6 +302,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "cordova.plugins.fileOpener2"
       ]
+    },
+    {
+      "id": "cordova-clipboard.Clipboard",
+      "file": "plugins/cordova-clipboard/www/clipboard.js",
+      "pluginId": "cordova-clipboard",
+      "clobbers": [
+        "cordova.plugins.clipboard"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -317,6 +325,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-mobile-ocr": "3.1.3",
     "cordova-sqlite-storage": "6.1.0",
     "cordova-plugin-file": "8.1.3",
-    "cordova-plugin-file-opener2": "4.0.0"
+    "cordova-plugin-file-opener2": "4.0.0",
+    "cordova-clipboard": "1.3.0"
   };
 });

@@ -10,6 +10,20 @@
   flex-wrap: wrap;
 
 }
+.copyIcon{
+  position: relative;
+  float: right;
+  height: 30px;
+  width: 30px;
+  font-size: 18px;
+  background: gray;
+  color: white;
+  padding: 6px;
+  border-radius: 50%;
+  right: 5px;
+  top: 5px;
+  z-index: 99;
+}
 
 .bg2 {
   background-color: #ffe37d;

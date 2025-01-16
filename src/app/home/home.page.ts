@@ -12,6 +12,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -23,7 +24,7 @@ export class HomePage {
   scanimg: any = [];
   pdfPreview: any = '';
   pdfData: any = '';
-  recognizedText: any = [];
+  recognizedText: any = '';
   extractScanImage: string = '';
 
   constructor(
@@ -36,28 +37,24 @@ export class HomePage {
     private sanitizer: DomSanitizer,
     private file: File,
     private fileOpener: FileOpener,
-    private webview: WebView
+    private webview: WebView,
+    private clipboard: Clipboard
 
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     this.checkPermissions();
+    console.log(this.pdfPreview);
+  }
+  copyText() {
+    this.clipboard.copy(this.recognizedText).then(() => {
+      alert('copied to clipboard!');
+      console.log('copied to clipboard!');
+    }).catch((error) => {
+      console.error('Error copying to clipboard:', error);
+    });
   }
 
-  // checkPermissions() {
-  //   this.androidPermissions
-  //     .checkPermission(
-  //       this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
-  //     )
-  //     .then((result) => {
-  //       if (!result.hasPermission) {
-  //         this.androidPermissions.requestPermission(
-  //           this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
-  //         );
-  //       }
-  //     })
-  //     .catch((err) => console.error('Permission error:', err));
-  // }
 
   checkPermissions() {
     if (this.platform.is('android')) {
@@ -71,7 +68,6 @@ export class HomePage {
       permissions.forEach((perm: any) => {
         this.androidPermissions.checkPermission(perm).then(
           (result) => {
-            console.log('perm', perm);
             if (!result.hasPermission) {
               // If the first permission is missing, request all permissions
               this.requestPermissions(perm);
@@ -84,15 +80,14 @@ export class HomePage {
                     (perm) => result[perm].hasPermission
                   );
                   console.log('allGranted', allGranted);
-
                   if (!allGranted) {
-                    this.requestPermissions(permissions);
+                    this.requestPermissions(perm);
                   }
                 });
             }
           },
           (error: any) => {
-            this.requestPermissions(permissions);
+            this.requestPermissions(perm);
           }
         );
       });
@@ -102,10 +97,10 @@ export class HomePage {
   // Request Permissions Function
   requestPermissions(permissions: string[]) {
     this.androidPermissions.requestPermissions(permissions).then(
-      (result) => {
+      (result: any) => {
         console.log('Permissions granted:', result);
       },
-      (err) => {
+      (err: any) => {
         console.error('Error requesting permissions:', err);
       }
     );
@@ -118,6 +113,7 @@ export class HomePage {
       sourceType: scanTyp, // scanTyp 1 for camera, 0 for gallery
       fileName: 'scanned-document',
       returnBase64: true,
+      quality: 4.0,
     };
 
     this.documentScanner
@@ -143,10 +139,10 @@ export class HomePage {
       htmlData += `<img src="${img}" style="width:100%; height:auto; margin-bottom:20px;"/>`;
     });
     this.pdfPreview = htmlData;
-
+    console.log(this.pdfPreview, 'this.pdfPreview');
     // Generate the PDF
     this.pdfGenerator
-      .fromData(htmlData, {
+      .fromData(this.pdfPreview, {
         documentSize: 'A4',
         landscape: 'portrait',
         type: 'base64', // Output PDF as base64
@@ -178,7 +174,7 @@ export class HomePage {
   }
   saveFile() {
     const directoryPath = this.file.dataDirectory + 'docScanner';
-  
+
     const fileName = 'example.txt';
     const fileContent = 'This is an example content for the file.';
 
@@ -192,81 +188,31 @@ export class HomePage {
         console.error('Error saving file:', err);
       });
   }
-  checkDirectory() {
-    const directoryPath = this.file.dataDirectory + 'docScanner';
-console.log(directoryPath,'directoryPath');
-    this.file
-      .checkDir(directoryPath, '')
-      .then(() => {
-        console.log('Directory exists!');
-      })
-      .catch(() => {
-        console.error('Directory does not exist.');
-      });
-  }
 
-  checkFile() {
-    const filePath = this.file.dataDirectory + 'docScanner/';
-    const fileName = 'example.txt';
 
-    this.file
-      .checkFile(filePath, fileName)
-      .then((fileContent: any) => {
-        console.log('File exists!');
-        console.log('fileContent!',fileContent);
-      
-        this.openfileContent(filePath, fileName, fileContent);
-       
-      })
-      .catch(() => {
-        console.error('File does not exist.');
-      });
-  }
-
-  openfileContent(filePath:any, fileName:any, MIMETYPE:any){
+  openfileContent(filePath: any, fileName: any, MIMETYPE: any) {
     this.fileOpener
-    .open(filePath, MIMETYPE)
-    .then(() => console.log('File opened successfully'))
-    .catch((err) => console.error('Error opening file:', err));
+      .open(filePath, MIMETYPE)
+      .then(() => console.log('File opened successfully'))
+      .catch((err) => console.error('Error opening file:', err));
 
-    // this.file
-    // .writeFile(filePath, fileName, fileContent, { replace: true })
-    // .then((fileEntry) => {
-    //   const fileUrl = fileEntry.nativeURL;
-    //   console.log('File saved at:', fileUrl);
-
-    //   // Open the file (optional)
-    //   this.fileOpener
-    // .open(filePath, 'text/plain')
-    // .then(() => console.log('File opened successfully'))
-    // .catch((err) => console.error('Error opening file:', err));
-    //   window.open(fileUrl, '_blank');
-    //   const localUrl = this.webview.convertFileSrc(filePath);
-    //   window.open(localUrl, '_blank');
-    // })
-    // .catch((err) => {
-    //   console.error('Error saving file:', err);
-    // });
   }
   savePdf(pdfBase64: string) {
-    console.log('Saving PDF...');
+    console.log('Saving PDF...', pdfBase64);
     this.createDirectory();
     const fileContent = this.base64ToBlob(pdfBase64, 'application/pdf');
-    const fileName = 'scanned-document.pdf';
+    const fileName = `scanned-document${Math.random()}.pdf`;
     const directoryPath = this.file.dataDirectory + 'docScanner';
-    console.log('fileName',fileName)
-    console.log('directoryPath',directoryPath)
-    console.log('fileContent',fileContent)
     this.file
-    .writeFile(directoryPath, fileName, fileContent, { replace: true })
-    .then((fileEntry) => {
-      console.log('File saved successfully at:', fileEntry.nativeURL);
-      this.openfileContent(fileEntry.nativeURL, fileName, 'application/pdf');
-    })
-    .catch((err) => {
-      console.error('Error saving file:', err);
-    });
-  
+      .writeFile(directoryPath, fileName, fileContent, { replace: true })
+      .then((fileEntry) => {
+        console.log('File saved successfully at:', fileEntry.nativeURL);
+        this.openfileContent(fileEntry.nativeURL, fileName, 'application/pdf');
+      })
+      .catch((err) => {
+        console.error('Error saving file:', err);
+      });
+
   }
 
   writeFile(path: string, fileName: string, pdfBlob: Blob) {
@@ -328,7 +274,8 @@ console.log(directoryPath,'directoryPath');
       .then((result: any) => {
         console.log('Recognized text:', result);
         this.extractScanImage = imagePath;
-        this.recognizedText = result.text;
+        let recognizedText = result.lines.linetext;
+        this.recognizedText = recognizedText.join(" ");
         console.log(this.recognizedText);
       })
       .catch((error: any) => {
@@ -336,10 +283,5 @@ console.log(directoryPath,'directoryPath');
       });
   }
 
-  captureAndRecognizeText() {
-    // Example image path (you can integrate this with a Camera plugin to capture an image dynamically)
-    const sampleImagePath =
-      'file:///storage/emulated/0/Download/sample-image.jpg';
-    this.scanImage(sampleImagePath);
-  }
+
 }

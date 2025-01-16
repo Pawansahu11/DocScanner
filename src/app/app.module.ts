@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DocumentScanner } from '@ionic-native/document-scanner/ngx';
 import { OCR } from '@awesome-cordova-plugins/ocr/ngx';
+import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
 import { PDFGenerator } from '@ionic-native/pdf-generator/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -25,6 +26,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     File,
     FileOpener,
     WebView,
+    Clipboard,
     Camera],
   bootstrap: [AppComponent],
 })
